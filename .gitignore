@@ -10,12 +10,21 @@ embed_cache/
 data/
 
 # --- Ephemeral evaluation workspaces & generated artifacts ---
+# eval_confidence/, eval_general/, eval_realworld/, eval_stress/ are ignored
+# WHOLESALE BY DESIGN: they hold generated corpora, temp ChromaDB workspaces,
+# caches and result artifacts. A small set of harness SOURCE scripts inside
+# them is tracked on purpose (added explicitly with `git add -f`, never
+# `git add -A`; see FINAL_SIGNOFF.md §6):
+#   eval_general/{make_corpus,eval_general}.py
+#   eval_realworld/{eval_realworld,postfix_runner,grader,ui_realworld}.py
+#   eval_stress/{eval_stress,ui_apptest,make_stress_corpus}.py
 eval_confidence/
 eval_general/
 eval_realworld/
 eval_stress/
 benchmark_isolated_*_results.json
 benchmark_isolated_*_manifest.json
+benchmark_results.json
 diag_misses.json
 model_lab_results.json
 prompt_lab_results.json
