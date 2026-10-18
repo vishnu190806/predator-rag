@@ -114,7 +114,7 @@ python -m pytest test_general_rag.py test_thinking_leak.py test_answer_config.py
 
 *   **`app.py` / `ingest.py` / `extractors.py` / `retrieve.py` / `answer.py`** — the production pipeline: Streamlit UI, chunking + cache + workspace index, per-format extraction, hybrid (dense+BM25+RRF) retrieval, grounded generation.
 *   **`test_general_rag.py`, `test_thinking_leak.py`, `test_answer_config.py`, `test_eval_grader.py`, `test_app_startup_preserves_foreign.py`** — regression suite (extraction, metadata, cache, retrieval, citations, workspace lifecycle, config pins, grader, startup-wipe scope).
-*   **`benchmark.py` + `benchmark_questions.json`** — legacy *physics* benchmark harness and its 100-question bank fixture, kept for reference and because the grader-model pin regression (`test_answer_config.py`) imports it.
+*   **`benchmark.py` + `benchmark_questions.json`** — legacy *physics* benchmark harness and its 99-question bank fixture, kept for reference and because the grader-model pin regression (`test_answer_config.py`) imports it.
 *   **`eval_general/`** — mixed-format corpus builder (`make_corpus.py`), deterministic+LLM evaluation harness (`eval_general.py`).
 *   **`eval_realworld/`** — 60-question held-out harness (`postfix_runner.py`, `eval_realworld.py`), answer grader (`grader.py`), AppTest UI probe (`ui_realworld.py`).
 *   **`eval_stress/`** — malformed-input stress harness (`make_stress_corpus.py`, `eval_stress.py`, `ui_apptest.py`).
