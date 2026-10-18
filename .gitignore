@@ -1,0 +1,45 @@
+# =============================================================
+# Predator RAG — release-candidate hygiene (rc-20261018)
+# =============================================================
+
+# --- Local vector database & runtime model caches (generated) ---
+chroma_db/
+embed_cache/
+
+# --- Source document corpora (user/local data; never in VCS) ---
+data/
+
+# --- Ephemeral evaluation workspaces & generated artifacts ---
+eval_confidence/
+eval_general/
+eval_realworld/
+eval_stress/
+benchmark_isolated_*_results.json
+benchmark_isolated_*_manifest.json
+diag_misses.json
+model_lab_results.json
+prompt_lab_results.json
+think_probe_results.json
+verify_budget.json
+verify_think_live.json
+
+# --- Python bytecode & caches ---
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+venv/
+
+# --- Secrets / machine-local configuration ---
+.env
+.env.*
+*.pem
+*.key
+
+# --- OS / editor noise ---
+Thumbs.db
+.DS_Store
+
+# --- Superseded drafts & binary imagery (kept only locally) ---
+Stack.png
+PR
