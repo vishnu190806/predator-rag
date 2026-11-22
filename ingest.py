@@ -15,7 +15,10 @@ sys.stdout.reconfigure(encoding='utf-8')
 # =====================================================
 # CONFIGURATION
 # =====================================================
-CHROMA_DB_PATH = "./chroma_db"
+# ChromaDB persistent location. Resolved once at import time so every module
+# that imports it agrees on a single database directory. Override with the
+# PREDATOR_RAG_CHROMA_PATH environment variable; default is ./chroma_db.
+CHROMA_DB_PATH = os.environ.get("PREDATOR_RAG_CHROMA_PATH", "./chroma_db")
 COLLECTION_NAME = "workspace_chunks"
 EMBEDDING_MODEL_NAME = "BAAI/bge-base-en-v1.5"
 CHUNK_SIZE_CHARS = 1600
@@ -644,6 +647,13 @@ def _connect(recreate):
         try:
             db_client.delete_collection(COLLECTION_NAME)
             print(f"Deleted existing collection '{COLLECTION_NAME}' for a clean start.")
+        except Exception:
+            pass
+        # Invalidate retrieve.py's cached collection handle so the next
+        # retrieval re-connects to the fresh collection, not a deleted one.
+        try:
+            import retrieve as _r
+            _r.invalidate_collection_cache()
         except Exception:
             pass
     return db_client.get_or_create_collection(COLLECTION_NAME)

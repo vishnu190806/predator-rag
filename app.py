@@ -16,7 +16,8 @@ from ingest import (ingest_file, remove_document, list_documents,
                     filter_new_uploads, prune_removed_files,
                     mark_upload_processed, clear_removal_state)
 from extractors import supported_extensions, UnsupportedFormatError, ExtractionError
-from retrieve import initialize_retrieval_components, retrieve, retrieve_formulas, RERANKER_MODEL_NAME
+from retrieve import (initialize_retrieval_components, retrieve, retrieve_formulas,
+                      RERANKER_MODEL_NAME, invalidate_collection_cache)
 from answer import (answer_question, is_numerical_question, build_context_string,
                     format_citations, generate_answer_stream, location_label,
                     OLLAMA_HOST, OLLAMA_MODEL, FALLBACK_MODEL, NUM_CTX)
@@ -138,6 +139,7 @@ if "clean_started" not in st.session_state:
         db_client = chromadb.PersistentClient(path=CHROMA_DB_PATH)
         if COLLECTION_NAME in [c.name for c in db_client.list_collections()]:
             db_client.delete_collection(COLLECTION_NAME)
+            invalidate_collection_cache()
     except Exception:
         pass
     st.session_state.clean_started = True
@@ -259,20 +261,21 @@ with st.sidebar:
     st.caption("Documents are parsed first, then the embedding model is loaded onto GPU (CUDA) if available. Falls back to CPU automatically.")
  
     st.markdown("---")
-    if st.button("🗑️ Reset Database & Cache", use_container_width=True, type="secondary"):
+    if st.button("🗑️ Reset Workspace", use_container_width=True, type="secondary"):
         try:
             db_client = chromadb.PersistentClient(path=CHROMA_DB_PATH)
             db_client.delete_collection(COLLECTION_NAME)
+            invalidate_collection_cache()
             clear_removal_state(
                 st.session_state.processed_files,
                 st.session_state.removed_files)
             st.session_state.warmed_up_models.clear()
             st.session_state.warming_model = None
-            st.success("Database wiped successfully!")
+            st.success("Workspace collection cleared. Upload documents to rebuild.")
             time.sleep(1.0)
             st.rerun()
         except Exception as e:
-            st.error(f"Error resetting database: {e}")
+            st.error(f"Error resetting workspace: {e}")
  
 # =====================================================
 # MAIN USER INTERFACE

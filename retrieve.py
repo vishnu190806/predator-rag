@@ -13,7 +13,11 @@ sys.stdout.reconfigure(encoding='utf-8')
 # =====================================================
 # CONFIGURATION
 # =====================================================
-CHROMA_DB_PATH = "./chroma_db"
+# ChromaDB persistent location. Resolved once at import time so every module
+# that imports it agrees on a single database directory. Override with the
+# PREDATOR_RAG_CHROMA_PATH environment variable (e.g. a temp dir for tests or
+# browser-based verification) without changing the default ./chroma_db.
+CHROMA_DB_PATH = os.environ.get("PREDATOR_RAG_CHROMA_PATH", "./chroma_db")
 COLLECTION_NAME = "workspace_chunks"
 EMBEDDING_MODEL_NAME = "BAAI/bge-base-en-v1.5"
 RERANKER_MODEL_NAME = "BAAI/bge-reranker-base"
@@ -25,6 +29,23 @@ _embedder = None
 _reranker = None
 _bm25 = None
 _corpus_data = None  # maps index to document data
+
+
+def invalidate_collection_cache():
+    """Drop cached ChromaDB client/collection and BM25 corpus so the next
+    get_db() / retrieve() re-connects to the current database state.
+
+    Must be called whenever the workspace collection is deleted or recreated
+    by another module (startup cleanup, manual reset, recreate-ingest), so
+    retrieval does not keep operating on a stale collection handle that may
+    point at a collection that no longer exists.
+    """
+    global _db_client, _collection, _bm25, _corpus_data
+    _db_client = None
+    _collection = None
+    _bm25 = None
+    _corpus_data = None
+
 
 def get_db():
     global _db_client, _collection
