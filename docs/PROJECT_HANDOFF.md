@@ -170,7 +170,7 @@ Acceptance criteria:
 
 ## 15. CHATGPT HANDOFF SUMMARY
 
-> **Project:** Predator RAG — Windows-native local textbook RAG for NCERT 11th/12th Physics Q&A (JEE/NEET/CBSE theory, examples, formulas, exercises). Single Python app in `C:\Users\Vishnu\Documents\College\Projects\Internship_Project\RAG_Project`.
+> **Project:** Predator RAG — Windows-native local textbook RAG for NCERT 11th/12th Physics Q&A (JEE/NEET/CBSE theory, examples, formulas, exercises). Single Python app in the repository root.
 > **Stack:** Python + Streamlit UI (`app.py`); PyMuPDF layout-aware chunking 1600/300 (`ingest.py`); `BAAI/bge-base-en-v1.5` embeddings + ChromaDB embedded (`./chroma_db`, collection `textbook_chunks`, 7868 chunks on disk) + BM25 + Reciprocal Rank Fusion k=60 (`retrieve.py`; cross-encoder reranker imported but disabled); local Ollama LLM default `qwen3:8b-q4_K_M`, ctx 12000, theory 512/think-off, numerical 2048/think-on (`answer.py`); `benchmark.py` + `generate_questions_v2.py` eval harness.
 > **Status:** Pipeline code-complete, no tests, no git. Verified this audit: all files compile; ChromaDB has 7868 chunks; Ollama reachable but default model NOT installed (has `llama3.1:8b`, `nomic-embed-text:latest`, nothing loaded); CUDA available; classifier misroutes e.g. "5.6 torque" as numerical; `benchmark.py` broken (missing `benchmark_questions.json` — generate via v2 script). Not verified: end-to-end query, ingest rerun, benchmark numbers (README 60% recall/37s claims are historical).
 > **Key decisions/constraints:** embedded Chroma over Qdrant server; native Windows over WSL2; CPU/auto embeddings to protect 8GB VRAM; fixed `num_ctx=12000` to avoid KV-cache reloads. Do NOT add servers/auth/Docker — local-embedded is the point.

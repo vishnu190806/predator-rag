@@ -127,4 +127,4 @@ python -m pytest test_general_rag.py test_thinking_leak.py test_answer_config.py
 
 ## 📜 License
 
-No license file yet — a license must be chosen before this repository is made public.
+This repository currently has no LICENSE file. No permission is granted for reuse, modification, or redistribution of any part of this project. All rights are reserved by the author.

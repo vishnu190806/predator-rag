@@ -77,7 +77,7 @@ Synthetic test files were created outside the project directory and removed afte
 
 ## 5. Git commit and release tag
 
-- Repository initialized fresh this session (`main` branch; identity: `Vishnu <vishnuvardhan190806@gmail.com>`).
+- Repository initialized fresh this session (`main` branch; identity: `Vishnu <redacted>`).
 - Initial RC commit `5d5a1f041b3ae01cd42c6df2cfe42e80c6d69f46` (51 files: source, tests, README,
   research/report docs, `requirements.txt`, `benchmark_questions.json` fixture, committed eval-harness scripts).
 - Annotated tag: **`rc-20261018`** → target commit `5d5a1f041b3ae01cd42c6df2cfe42e80c6d69f46`.
